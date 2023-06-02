@@ -1,30 +1,32 @@
-import React, { useCallback } from 'react';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import React, { useCallback, useState } from "react";
+import { InformationCircleIcon, SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/outline";
 
-import PlayButton from '@/components/PlayButton';
-import useBillboard from '@/hooks/useBillboard';
-import useInfoModalStore from '@/hooks/useInfoModalStore';
+import PlayButton from "@/components/PlayButton";
+import useBillboard from "@/hooks/useBillboard";
+import useInfoModalStore from "@/hooks/useInfoModalStore";
 
 const Billboard: React.FC = () => {
   const { openModal } = useInfoModalStore();
   const { data } = useBillboard();
+  const [isMuted, setIsMuted] = useState<boolean>(true);
 
   const handleOpenModal = useCallback(() => {
     openModal(data?.id);
   }, [openModal, data?.id]);
 
-
-
   return (
     <div className="relative h-[56.25vw]">
-      <video poster={data?.thumbnailUrl} className="w-full h-[56.25vw] object-cover brightness-[60%] transition duration-500" autoPlay muted loop src={data?.videoUrl}></video>
+      <video
+        poster={data?.thumbnailUrl}
+        className="w-full h-[56.25vw] object-cover brightness-[60%] transition duration-500"
+        autoPlay
+        muted={isMuted}
+        loop
+        src={data?.videoUrl}
+      ></video>
       <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
-        <p className="text-white text-1xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
-          {data?.title}
-        </p>
-        <p className="text-white text-[8px] md:text-lg mt-3 md:mt-8 w-[90%] md:w-[80%] lg:w-[50%] drop-shadow-xl">
-          {data?.description}
-        </p>
+        <p className="text-white text-1xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">{data?.title}</p>
+        <p className="text-white text-[8px] md:text-lg mt-3 md:mt-8 w-[90%] md:w-[80%] lg:w-[50%] drop-shadow-xl">{data?.description}</p>
         <div className="flex flex-row items-center mt-3 md:mt-4 gap-3">
           <PlayButton movieId={data?.id} />
           <button
@@ -32,12 +34,12 @@ const Billboard: React.FC = () => {
             className="
             bg-white
             text-white
-              bg-opacity-30 
-              rounded-md 
-              py-1 md:py-2 
+              bg-opacity-30
+              rounded-md
+              py-1 md:py-2
               px-2 md:px-4
-              w-auto 
-              text-xs lg:text-lg 
+              w-auto
+              text-xs lg:text-lg
               font-semibold
               flex
               flex-row
@@ -45,13 +47,25 @@ const Billboard: React.FC = () => {
               hover:bg-opacity-20
               transition
             "
-            >
-              <InformationCircleIcon className="w-4 md:w-7 mr-1" />
-              More Info
+          >
+            <InformationCircleIcon className="w-4 md:w-7 mr-1" />
+            More Info
           </button>
         </div>
       </div>
+      <div className="absolute top-[60%] mr-0 right-0 flex gap-4">
+        <div className=" border-white border-2 p-1 h-fit rounded-full cursor-pointer">
+          {isMuted ? (
+            <SpeakerXMarkIcon onClick={() => setIsMuted(!isMuted)} className="w-4 md:w-6 text-white" />
+          ) : (
+            <SpeakerWaveIcon onClick={() => setIsMuted(!isMuted)} className="w-4 md:w-6 text-white" />
+          )}
+        </div>
+        <span className="bg-black bg-opacity-40 p-1 border-gray-300 border-l-3 h-max text-xs md:text-base text-white py-1 ps-2 pe-12">
+          {data?.requiredAge}+
+        </span>
+      </div>
     </div>
-  )
-}
+  );
+};
 export default Billboard;
