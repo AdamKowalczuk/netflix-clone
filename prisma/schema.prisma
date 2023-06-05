@@ -70,4 +70,5 @@ model Movie {
   genre        String
   duration     String
   requiredAge  Int
+  type         String
 }

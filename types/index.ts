@@ -6,5 +6,6 @@ export interface MovieInterface {
   videoUrl: string;
   duration: string;
   genre: string;
-  requiredAge: number
+  requiredAge: number;
+  type: string;
 }

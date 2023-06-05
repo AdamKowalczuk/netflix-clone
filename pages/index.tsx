@@ -8,6 +8,8 @@ import MovieList from "@/components/MovieList";
 import InfoModal from "@/components/InfoModal";
 import useMovieList from "@/hooks/useMovieList";
 import useFavorites from "@/hooks/useFavorites";
+import useSeries from "@/hooks/useSeries";
+import useFilms from "@/hooks/useFilms";
 import useInfoModalStore from "@/hooks/useInfoModalStore";
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -28,6 +30,8 @@ export async function getServerSideProps(context: NextPageContext) {
 const Home = () => {
   const { data: movies = [] } = useMovieList();
   const { data: favorites = [] } = useFavorites();
+  const { data: series = [] } = useSeries();
+  const { data: films = [] } = useFilms();
   const { isOpen, closeModal } = useInfoModalStore();
 
   return (
@@ -38,6 +42,8 @@ const Home = () => {
       <div className="pb-40">
         <MovieList title="Trending Now" data={movies} />
         <MovieList title="My List" data={favorites} />
+        <MovieList title="Series" data={series} />
+        <MovieList title="Films" data={films} />
       </div>
     </>
   );
